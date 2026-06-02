@@ -1,0 +1,807 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bürgerleitfaden – Bürgerentscheid Frankenschnellweg Nürnberg, 28. Juni 2026</title>
+    <style>
+        :root {
+            --bg: #ffffff;
+            --text: #1e1e1e;
+            --text-light: #555;
+            --border: #ccc;
+            --accent: #2b5c74;
+            --accent-light: #e8f0f4;
+            --button: #2b5c74;
+            --button-hover: #1d3f4f;
+            --button-text: #ffffff;
+            --focus-ring: #005a9c;
+            --shadow: 0 2px 8px rgba(0,0,0,0.08);
+            --radius: 8px;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            padding: 0 1rem 2rem;
+            max-width: 65rem;
+            margin: 0 auto;
+        }
+        a { color: var(--accent); }
+        a:hover, a:focus { text-decoration: underline; }
+
+        /* Header */
+        header {
+            text-align: center;
+            margin: 2rem 0 1.5rem;
+        }
+        h1 {
+            font-size: 2.2rem;
+            margin-bottom: 0.5rem;
+            line-height: 1.2;
+        }
+        .date { color: var(--text-light); font-size: 1.1rem; margin-bottom: 1.5rem; }
+        .question-box {
+            background: var(--accent-light);
+            border-left: 5px solid var(--accent);
+            padding: 1.2rem 1.5rem;
+            margin: 1.5rem 0;
+            border-radius: var(--radius);
+            text-align: left;
+        }
+        .question-box p { font-weight: 600; margin-bottom: 0.5rem; }
+        .meaning {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        .meaning div { flex: 1 1 200px; }
+        .meaning strong { display: block; margin-bottom: 0.3rem; }
+
+        /* Skip link */
+        .skip-link {
+            position: absolute;
+            top: -40px;
+            left: 0;
+            background: var(--accent);
+            color: white;
+            padding: 0.5rem;
+            z-index: 100;
+            transition: top 0.2s;
+        }
+        .skip-link:focus { top: 0; }
+
+        /* Finder */
+        .finder {
+            background: #f5f7fa;
+            border-radius: var(--radius);
+            padding: 1.5rem;
+            margin: 2rem 0;
+            box-shadow: var(--shadow);
+        }
+        .finder h2 { margin-bottom: 1rem; font-size: 1.5rem; }
+        .finder ol { list-style-position: inside; margin-bottom: 1.5rem; }
+        .finder li { margin-bottom: 0.8rem; }
+        .finder-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+        .finder-btn {
+            background: var(--button);
+            color: var(--button-text);
+            border: none;
+            padding: 0.6rem 1.2rem;
+            border-radius: var(--radius);
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: background 0.2s;
+            text-decoration: none;
+            display: inline-block;
+        }
+        .finder-btn:hover, .finder-btn:focus { background: var(--button-hover); }
+        .finder-btn:focus-visible { outline: 3px solid var(--focus-ring); outline-offset: 2px; }
+
+        /* Core facts table */
+        .core-facts { margin: 2rem 0; }
+        .core-facts h2 { margin-bottom: 1rem; }
+        .table-note { font-size: 0.9rem; color: var(--text-light); margin-bottom: 1rem; }
+
+        /* Details / Accordion */
+        details {
+            margin: 1rem 0;
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            background: #fafafa;
+            box-shadow: var(--shadow);
+        }
+        details summary {
+            padding: 1rem 1.2rem;
+            font-weight: 600;
+            font-size: 1.15rem;
+            cursor: pointer;
+            list-style: none;
+            position: relative;
+            background: white;
+            border-radius: var(--radius);
+        }
+        details summary::-webkit-details-marker { display: none; }
+        details summary::before {
+            content: '▶';
+            display: inline-block;
+            margin-right: 0.6rem;
+            transition: transform 0.2s;
+            color: var(--accent);
+            font-size: 0.8rem;
+        }
+        details[open] summary::before {
+            transform: rotate(90deg);
+        }
+        details summary:focus-visible {
+            outline: 3px solid var(--focus-ring);
+            outline-offset: -1px;
+        }
+        details .details-content {
+            padding: 0 1.2rem 1.2rem;
+        }
+
+        /* Tables */
+        .table-wrapper {
+            overflow-x: auto;
+            margin: 1rem 0;
+            -webkit-overflow-scrolling: touch;
+        }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            min-width: 600px;
+            font-size: 0.95rem;
+        }
+        th, td {
+            border: 1px solid #ccc;
+            padding: 0.6rem 0.8rem;
+            vertical-align: top;
+        }
+        th {
+            background: #e9eff2;
+            font-weight: 600;
+            text-align: left;
+        }
+        tr:nth-child(even) td { background: #f4f7f9; }
+        @media (max-width: 700px) {
+            .table-wrapper { margin: 0 -1rem; width: calc(100% + 2rem); }
+        }
+
+        /* Chat button & panel */
+        .chat-toggle {
+            position: fixed;
+            bottom: 1.5rem;
+            right: 1.5rem;
+            background: var(--button);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 56px;
+            height: 56px;
+            font-size: 1.8rem;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .chat-toggle:hover { background: var(--button-hover); }
+        .chat-panel {
+            position: fixed;
+            bottom: 5rem;
+            right: 1.5rem;
+            width: 320px;
+            max-width: 90vw;
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+            display: none;
+            flex-direction: column;
+            z-index: 999;
+            overflow: hidden;
+        }
+        .chat-panel.open { display: flex; }
+        .chat-header {
+            background: var(--accent);
+            color: white;
+            padding: 0.8rem 1rem;
+            font-weight: 600;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .close-chat {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.3rem;
+            cursor: pointer;
+        }
+        .chat-messages {
+            flex: 1;
+            padding: 0.8rem;
+            overflow-y: auto;
+            max-height: 300px;
+            background: #f8f9fa;
+        }
+        .chat-message {
+            margin-bottom: 0.8rem;
+            padding: 0.6rem 0.8rem;
+            border-radius: 0.8rem;
+            max-width: 85%;
+            font-size: 0.9rem;
+            line-height: 1.4;
+        }
+        .chat-message.user { background: var(--accent-light); margin-left: auto; }
+        .chat-message.bot { background: white; border: 1px solid #ddd; }
+        .chat-input-area {
+            display: flex;
+            border-top: 1px solid #ddd;
+            padding: 0.5rem;
+        }
+        .chat-input-area input {
+            flex: 1;
+            padding: 0.5rem;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            margin-right: 0.3rem;
+        }
+        .chat-input-area button {
+            background: var(--accent);
+            color: white;
+            border: none;
+            padding: 0.5rem 0.8rem;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        /* Search */
+        .search-box {
+            display: flex;
+            margin: 1.5rem 0;
+            justify-content: center;
+        }
+        .search-box input {
+            padding: 0.6rem 1rem;
+            width: 100%;
+            max-width: 500px;
+            border: 2px solid var(--accent);
+            border-radius: 2rem 0 0 2rem;
+            font-size: 1rem;
+        }
+        .search-box button {
+            background: var(--accent);
+            color: white;
+            border: 2px solid var(--accent);
+            border-left: none;
+            padding: 0 1.2rem;
+            border-radius: 0 2rem 2rem 0;
+            cursor: pointer;
+            font-weight: 600;
+        }
+        .search-results {
+            margin: 0.5rem 0;
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+            list-style: none;
+        }
+        .search-results li {
+            margin-bottom: 0.4rem;
+        }
+        .search-results a {
+            display: block;
+            padding: 0.4rem 0.8rem;
+            background: #f0f4f7;
+            border-radius: 4px;
+        }
+        .highlight { background-color: #ffeb3b; }
+
+        /* Footer */
+        footer {
+            margin-top: 3rem;
+            border-top: 2px solid var(--accent);
+            padding-top: 1.5rem;
+            font-size: 0.9rem;
+        }
+        .cookie-banner {
+            background: #f0f0f0;
+            padding: 0.8rem 1rem;
+            border-radius: var(--radius);
+            margin-bottom: 1rem;
+        }
+        .imprint-datenschutz details {
+            border: none;
+            box-shadow: none;
+            background: none;
+        }
+        .imprint-datenschutz details summary {
+            padding: 0.5rem 0;
+            background: none;
+            font-size: 1rem;
+        }
+        .imprint-datenschutz details .details-content {
+            padding: 0.5rem 0;
+        }
+
+        @media (max-width: 600px) {
+            h1 { font-size: 1.6rem; }
+            .finder-buttons { flex-direction: column; }
+            .chat-panel { width: 280px; right: 0.5rem; }
+        }
+    </style>
+</head>
+<body>
+    <a href="#main-content" class="skip-link">Zum Inhalt springen</a>
+
+    <header>
+        <h1>Bürgerleitfaden: Wie entscheide ich beim Bürgerentscheid über den Frankenschnellweg?</h1>
+        <div class="date">Abstimmung am <strong>28. Juni 2026</strong></div>
+        <div class="question-box">
+            <p>Sie stimmen über folgende Frage ab:</p>
+            <blockquote><strong>„Sind Sie dafür, dass die derzeitigen Planungen &amp; Maßnahmen (nach aktuellem Planfeststellungsverfahren) für den Ausbau des Frankenschnellwegs sofort gestoppt werden?"</strong></blockquote>
+            <div class="meaning">
+                <div><strong>Ja</strong> bedeutet: Der geplante Tunnel wird gestoppt. Was danach folgt, ist durch den Bürgerentscheid selbst nicht festgelegt. Mögliche Szenarien: eine neue Planung mit einem Alternativkonzept wie dem sogenannten „Plan B" (Fahrbahnbündelung, oberirdische Verbesserungen); eine reine Sanierung ohne Qualitätsverbesserung; oder eine länger dauernde politische Neuorientierung ohne absehbaren Zeithorizont. Plan B ist das prominenteste diskutierte Alternativszenario, aber kein durch den Entscheid garantiertes Ergebnis. Die Ja-Seite sieht Plan B als konkreten politischen Fahrplan, da die Stadtverwaltung ihn im Verkehrsausschuss (26.06.2025) selbst als prüfenswerte Alternative präsentiert hat. Die Nein-Seite betont, dass nach einem Ja keine Verpflichtung zu Plan B besteht.</div>
+                <div><strong>Nein</strong> bedeutet: Der kreuzungsfreie Ausbau wird wie geplant umgesetzt (Abschnitt West: Baubeginn Februar 2027, Fertigstellung Anfang bis Mitte 2030; Abschnitt Mitte mit Tunnel: danach, Fertigstellung ca. 2040).</div>
+            </div>
+        </div>
+    </header>
+
+    <main id="main-content">
+        <!-- Suchfeld -->
+        <div class="search-box">
+            <input type="text" id="search-input" placeholder="Seite durchsuchen…" aria-label="Suchbegriff eingeben">
+            <button id="search-btn">Suchen</button>
+        </div>
+        <ul id="search-results" class="search-results" aria-live="polite"></ul>
+
+        <!-- 10-Sekunden-Finder -->
+        <section class="finder" aria-labelledby="finder-heading">
+            <h2 id="finder-heading">Finden Sie Ihre Gruppe in 10 Sekunden</h2>
+            <ol>
+                <li><strong>Wohnen Sie direkt am Frankenschnellweg (max. 300 m)?</strong> Ja → Abschnitt A (Anwohner)</li>
+                <li><strong>Sind Sie täglich mit dem Auto auf dem Frankenschnellweg unterwegs (Arbeitsweg)?</strong> Ja → Abschnitt B (Autopendler)</li>
+                <li><strong>Fahren Sie oft privat mit dem Auto in Nürnberg, aber nicht hauptsächlich auf dem FSW?</strong> Ja → Abschnitt C (Autofahrer sonst)</li>
+                <li><strong>Wie bewegen Sie sich hauptsächlich fort?</strong><br>
+                    – Mit Bus/Bahn → Abschnitt D (ÖPNV-Nutzer)<br>
+                    – Zu Fuß → Abschnitt E (Fußgänger)<br>
+                    – Mit dem Rad → Abschnitt F (Radfahrer)</li>
+                <li><strong>Trifft nichts davon zu?</strong> – Dann lesen Sie Abschnitt G (Steuerzahler &amp; Allgemein). Dieser betrifft letztlich alle.</li>
+            </ol>
+            <div class="finder-buttons" role="group" aria-label="Direkt zu Ihrem Abschnitt">
+                <button class="finder-btn" data-target="section-A">A: Anwohner</button>
+                <button class="finder-btn" data-target="section-B">B: Autopendler</button>
+                <button class="finder-btn" data-target="section-C">C: Autofahrer sonst</button>
+                <button class="finder-btn" data-target="section-D">D: ÖPNV-Nutzer</button>
+                <button class="finder-btn" data-target="section-E">E: Fußgänger</button>
+                <button class="finder-btn" data-target="section-F">F: Radfahrer</button>
+                <button class="finder-btn" data-target="section-G">G: Steuerzahler &amp; Allgemein</button>
+            </div>
+        </section>
+
+        <!-- Kernfakten-Tabelle (reduziert) -->
+        <section class="core-facts">
+            <h2>Für alle Leser: Die wichtigsten Fakten im Überblick</h2>
+            <p class="table-note">Hinweis zu den Zahlen: Die Kosten des Tunnelprojekts stammen aus der Ausführungsplanung (Kostenstand 2025) der Stadt Nürnberg und sind öffentlich dokumentiert — sie sind geprüft und ausschreibungsreif. Die Kosten des „Plan B" sind eine politische Schätzung der Grünen-Stadtratsfraktion ohne unabhängige Kostenermittlung — sie sind nicht ausschreibungsreif und können erheblich abweichen. Diese epistemische Asymmetrie ist beim Vergleich beider Spalten zu berücksichtigen. Alle Bauzeiten sind Schätzungen.</p>
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr><th></th><th>Kreuzungsfreier Ausbau mit Tunnel (Nein)</th><th>Plan B – Oberirdische Alternative (ein mögliches Szenario nach Ja, kein garantiertes Ergebnis)</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>Geschätzte Gesamtkosten</td><td>ca. 1,1 Mrd. € (geprüfte Ausführungsplanung, Kostenstand 2025). Tatsächliche Gesamtbelastung deutlich höher (siehe Details).</td><td>ca. 300 Mio. € (politische Schätzung, nicht geprüft)</td></tr>
+                        <tr><td>Förderung durch Freistaat Bayern</td><td>650 Mio. € (GVFG/FAG, zweckgebunden) + 150 Mio. € Sonderfinanzierung = 800 Mio. €</td><td>Ungewiss; Fördertöpfe wären neu zu beantragen</td></tr>
+                        <tr><td>Städtischer Eigenanteil (Schätzung)</td><td>ca. 300 Mio. € laut Stadt; Kritiker schätzen 400 Mio. €+</td><td>Ungewiss – abhängig von neuen Förderverfahren</td></tr>
+                        <tr><td>Bauzeit (Schätzung)</td><td>Abschnitt West: ~3 Jahre (Fertigstellung Anfang bis Mitte 2030); Abschnitt Mitte: ~10 Jahre (danach) – Gesamtfertigstellung ca. 2040</td><td>5–7 Jahre Bau (Schätzung) – zuzüglich neuem Planfeststellungsverfahren (5–10 Jahre). Realistischer Baubeginn frühestens Mitte der 2030er, Fertigstellung potenziell 2040+</td></tr>
+                        <tr><td>Lärmschutz für Anwohner</td><td>Abschnitt West: bis zu 8 m hohe Lärmschutzwände, 2.560 m Länge, über 7.500 begünstigte Anwohner. Abschnitt Mitte: Tunnel nimmt Durchgangsverkehr auf.</td><td>Plan B sieht Tempo 50, Fahrbahnbündelung und Lärmschutzwände vor. Kein direkter Zahlenvergleich möglich.</td></tr>
+                        <tr><td>Rechtssicherheit</td><td>Planfeststellung rechtskräftig (BVerwG März 2025); Baurecht liegt vor</td><td>Neue Planung und Genehmigungsverfahren nötig; Dauer unbekannt</td></tr>
+                        <tr><td>Klimabilanz</td><td>Großer Ressourcenverbrauch (Betonmengen für Tunnel); konterkariert Nürnbergs Klimaziele</td><td>Geringerer Materialeinsatz, mehr Entsiegelung</td></tr>
+                        <tr><td>Verkehrsbelastung heute</td><td>Zwei Zahlen: Stadtwebsite nennt „über 60.000 Fahrzeuge täglich" (Planungsgrundlage). Verkehrszählung 2024/2025: rund 48.000 Fz/Tag. Rückgang um ca. 13 % seit letzter Messung. Ausbauplanungen basieren auf älteren Prognosen.</td><td>Gleiche Ausgangslage</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <p>Vollständige Details finden Sie in den einzelnen Abschnitten.</p>
+        </section>
+
+        <!-- Abschnitte A–G als Accordion -->
+        <!-- Abschnitt A -->
+        <details id="section-A">
+            <summary>Abschnitt A: Sie wohnen direkt am Frankenschnellweg (max. 300 m)</summary>
+            <div class="details-content">
+                <h3>Fakten</h3>
+                <div class="table-wrapper"><table>
+                    <tr><th>Aspekt</th><th>Tunnel (Nein)</th><th>Plan B (Ja)</th></tr>
+                    <tr><td>Bauzeit</td><td>Abschnitt West: ca. 3 Jahre (Baubeginn Feb. 2027, Fertigstellung Anfang bis Mitte 2030). Abschnitt Mitte mit Tunnel: ~10 weitere Jahre (Beginn nach West, Fertigstellung ca. 2040)</td><td>5–7 Jahre (Schätzung) – plus Planungszeit; Beginn unbekannt</td></tr>
+                    <tr><td>Lärmschutz danach</td><td>Abschnitt West: bis zu 8 m hohe Wände, 2.560 m Länge. Abschnitt Mitte: Durchgangsverkehr im Tunnel, oberirdisch deutlich weniger Fahrzeuge in den direkt entlasteten Bereichen (z. B. Sandreuth: –51.000 Fz/Tag laut Gutachten). Achtung: In manchen angrenzenden Straßen (z. B. Schwabacher Straße Nord) wird laut Verkehrsgutachten mehr Verkehr erwartet als heute — die Entlastung ist nicht flächendeckend</td><td>Plan B: Tempo 50, Fahrbahnbündelung, Lärmschutzwände. Kein Zahlenvergleich möglich (keine vergleichbare Messgröße veröffentlicht)</td></tr>
+                    <tr><td>Grünfläche / Verbindung</td><td>Park auf Tunneldeckel – politisch versprochen, rechtlich nicht gesichert, Finanzierung offen. Abschnitt Mitte ist auch planungsrechtlich noch nicht vollständig beschlossen</td><td>Grünzug als fester Bestandteil des Konzepts – aber ebenfalls abhängig vom künftigen Planungsverfahren</td></tr>
+                    <tr><td>Zeitpunkt der Verbesserung (Lärmschutz)</td><td>Abschnitt West: Anfang bis Mitte 2030. Abschnitt Mitte: frühestens ca. 2040</td><td>Abhängig von Planungsanlauf. Erfahrungswert für Planfeststellungsverfahren in Bayern: 5–10 Jahre. Baubeginn realistisch frühestens Mitte der 2030er-Jahre</td></tr>
+                </table></div>
+                <p><strong>Wichtiger Hinweis für Anwohner:</strong> Die Stadt betont ausdrücklich: Ein „Ja" beim Bürgerentscheid würde <strong>auch den bereits geplanten Lärmschutz des Abschnitts West stoppen</strong>, da dieser Bestandteil des laufenden Planfeststellungsverfahrens ist. Ob und wann gleichwertiger Lärmschutz im Rahmen eines neuen Verfahrens käme, ist offen.</p>
+                <h4>Fragen für Ihre Abwägung</h4>
+                <ul>
+                    <li>Ist Ihnen der <strong>gesicherte und zeitnahe Lärmschutz</strong> (Abschnitt West: Baubeginn Feb. 2027, Fertigstellung Anfang bis Mitte 2030) wichtiger – auch wenn danach noch ~10 weitere Jahre Bauzeit für den Tunnel folgen?</li>
+                    <li>Oder setzen Sie auf <strong>Plan B</strong> mit möglicherweise kürzerer Gesamtbauzeit, aber unklarem Starttermin und ohne gesicherten Vergleichswert beim Lärmschutz?</li>
+                </ul>
+            </div>
+        </details>
+
+        <!-- Abschnitt B -->
+        <details id="section-B">
+            <summary>Abschnitt B: Sie sind täglich mit dem Auto auf dem Frankenschnellweg unterwegs (Arbeitsweg)</summary>
+            <div class="details-content">
+                <h3>Fakten</h3>
+                <div class="table-wrapper"><table>
+                    <tr><th>Aspekt</th><th>Tunnel (Nein)</th><th>Plan B (Ja)</th></tr>
+                    <tr><td>Bauzeit-Belastung</td><td>Abschnitt West: ~3 Jahre (Fertigstellung Anfang bis Mitte 2030). Abschnitt Mitte: ~10 weitere Jahre (Fertigstellung ca. 2040). Für Pendler bedeutet das: phasenweise Baustellen bis ca. 2040</td><td>5–7 Jahre Bau (Schätzung) – plus Planungsvorlauf; Gesamtdauer bis zur Fertigstellung unklar</td></tr>
+                    <tr><td>Nutzen nach Fertigstellung</td><td>Durchgangsverkehr verschwindet in den Tunnel; oberirdische Straße wird entlastet. Für Pendler mit Start/Ziel in Nürnberg bleibt der Stadtverkehr oberirdisch, aber mit weniger Gegenverkehr</td><td>Fahrbahnbündelung, optimierte Ampeln; Stauverringerung angestrebt. Kein Tunnel-Effekt für Durchgangsverkehr</td></tr>
+                    <tr><td>Zeitpunkt der Verbesserung</td><td>Abschnitt West: Anfang bis Mitte 2030. Vollständiger Nutzen: ca. 2040</td><td>Neues Planfeststellungsverfahren nötig (Erfahrungswert Bayern: 5–10 Jahre); Baubeginn realistisch frühestens Mitte der 2030er-Jahre; Fertigstellung potenziell 2040+</td></tr>
+                    <tr><td>Risiken</td><td>Ausweichverkehr auf Nebenstraßen während Bauzeit möglich</td><td>Ausweichverkehr während Bauzeit möglich; Kritiker befürchten dauerhaft mehr Schleichverkehr ohne Tunnel-Entflechtung</td></tr>
+                </table></div>
+                <p><strong>Zusätzliche Information:</strong> Laut Georg Kern, Geschäftsführer der Deutschen Verkehrswissenschaftlichen Gesellschaft, liegt die aktuelle Verkehrsbelastung auf dem FSW ca. 13 % unter dem Stand vor zehn Jahren. Die Ausbauplanungen basieren auf älteren Prognosewerten, die von steigendem Verkehr ausgingen. Die Stadt Nürnberg hält den Ausbau dennoch für notwendig, da der FSW mit über 60.000 Kfz/Tag eine zentrale Achse bleibt und Schleichverkehr in Wohngebieten ein eigenständiges Problem darstellt.</p>
+                <h4>Fragen für Ihre Abwägung</h4>
+                <ul>
+                    <li>Sind Sie bereit, <strong>phasenweise Baustellen bis ca. 2040</strong> zu akzeptieren, um eine vollständig entflochtene Straße zu erhalten?</li>
+                    <li>Oder bevorzugen Sie <strong>Plan B</strong>, dessen Bau allein kürzer dauert, dessen Gesamtfertigstellung (inklusive Planungsvorlauf von erfahrungsgemäß 5–10 Jahren) aber ebenfalls ca. 2040 oder später liegen kann?</li>
+                </ul>
+            </div>
+        </details>
+
+        <!-- Abschnitt C -->
+        <details id="section-C">
+            <summary>Abschnitt C: Sie fahren oft privat mit dem Auto in Nürnberg, aber nicht hauptsächlich auf dem FSW</summary>
+            <div class="details-content">
+                <h3>Fakten</h3>
+                <div class="table-wrapper"><table>
+                    <tr><th>Aspekt</th><th>Tunnel (Nein)</th><th>Plan B (Ja)</th></tr>
+                    <tr><td>Direkter Nutzen für Sie</td><td>Kaum – Sie profitieren nicht vom Tunnellärmschutz. Die oberirdische Entlastung hilft nur, falls Sie gelegentlich den FSW nutzen</td><td>Ebenfalls kein direkter Nutzen</td></tr>
+                    <tr><td>Finanzielle Belastung (Steuerzahler)</td><td>Städtischer Eigenanteil ca. 300–400 Mio. € + ca. 1,5 Mio. € jährliche Tunnelbetriebskosten</td><td>Deutlich geringere Gesamtkosten (grobe Schätzung ca. 300 Mio. €); Eigenanteil hängt von neuen Förderverfahren ab</td></tr>
+                    <tr><td>Bauzeit-Belastung</td><td>Phasenweise Baustellen bis ca. 2040; Ausweichverkehr kann auch Ihre Wohngegend belasten</td><td>5–7 Jahre (Schätzung), plus Planungsvorlauf</td></tr>
+                    <tr><td>Haushalt</td><td>Bezirksregierung verweigerte 2026 neue Kreditermächtigungen von 170 Mio. € – Finanzierungsweg für den Tunnel unklar</td><td>Geringere Gesamtsumme, aber ebenfalls Fördermittel nötig</td></tr>
+                </table></div>
+                <h4>Fragen für Ihre Abwägung</h4>
+                <ul>
+                    <li>Sind Sie als Steuerzahler bereit, als Eigenanteil mehrere hundert Millionen Euro zu tragen – bei unklarer Haushaltslage – um anderen Bürgern (Anwohnern) maximalen Lärmschutz zu bieten?</li>
+                    <li>Oder bevorzugen Sie die kostengünstigere Lösung, die den städtischen Haushalt schont und Mittel für andere Projekte freihält?</li>
+                </ul>
+            </div>
+        </details>
+
+        <!-- Abschnitt D -->
+        <details id="section-D">
+            <summary>Abschnitt D: Sie nutzen hauptsächlich Busse und Bahnen</summary>
+            <div class="details-content">
+                <h3>Fakten</h3>
+                <div class="table-wrapper"><table>
+                    <tr><th>Aspekt</th><th>Tunnel (Nein)</th><th>Plan B (Ja)</th></tr>
+                    <tr><td>Finanzielle Mittel für ÖPNV</td><td>Städtischer Eigenanteil bindet erhebliche Haushaltsmittel. Jährliche Tunnelbetriebskosten (ca. 1,5 Mio. €) als Dauerbelastung</td><td>Geringere Kosten lassen mehr Spielraum für ÖPNV-Investitionen</td></tr>
+                    <tr><td>Fördermittelbindung</td><td>Die 800 Mio. € Förderung sind zweckgebunden an das Tunnelprojekt und stehen nicht automatisch für den ÖPNV zur Verfügung – auch nicht bei einem Projektstopp</td><td>Bei einem Stopp müssten neue Förderanträge gestellt werden; eine Umwidmung in ÖPNV-Mittel ist möglich, aber nicht garantiert</td></tr>
+                    <tr><td>Verkehrsinduzierung</td><td>Kapazitätserweiterungen können zusätzlichen Kfz-Verkehr anlocken (<em>induced demand</em> — in der Verkehrsforschung belegtes Phänomen). Ob und in welchem Ausmaß dies beim FSW greifen würde, ist nicht spezifisch untersucht</td><td>Geringere Kapazitätserweiterung; das Risiko von induziertem Mehrverkehr dürfte geringer sein, ist aber ebenfalls nicht quantifiziert</td></tr>
+                </table></div>
+                <h4>Fragen für Ihre Abwägung</h4>
+                <ul>
+                    <li>Ist es Ihnen wichtiger, dass die Stadt <strong>keine Milliarden in eine Autostraße investiert</strong>, um mehr Spielraum für den ÖPNV zu behalten?</li>
+                    <li>Oder akzeptieren Sie die Tunnelkosten, weil Sie die Lärmreduzierung für Anwohner für wichtig halten?</li>
+                </ul>
+            </div>
+        </details>
+
+        <!-- Abschnitt E -->
+        <details id="section-E">
+            <summary>Abschnitt E: Sie sind zu Fuß unterwegs</summary>
+            <div class="details-content">
+                <h3>Fakten</h3>
+                <div class="table-wrapper"><table>
+                    <tr><th>Aspekt</th><th>Tunnel (Nein)</th><th>Plan B (Ja)</th></tr>
+                    <tr><td>Beeinträchtigung während Bau</td><td>Phasenweise Baustellen: West bis Anfang bis Mitte 2030, Mitte (Tunnel) danach ca. 10 Jahre bis ca. 2040; gesperrte Gehwege und Umleitungen</td><td>5–7 Jahre Bauzeit (Schätzung) – plus Planungsvorlauf</td></tr>
+                    <tr><td>Ergebnis nach Bau</td><td>Stadtteilpark auf Tunneldeckel (Abschnitt Mitte) – politisch versprochen, nicht rechtlich bindend, Finanzierung offen; fällt bei Kostendruck erfahrungsgemäß zuerst weg</td><td>Grünzug als Konzeptbestandteil – ebenfalls nicht rechtlich gesichert, da kein Genehmigungsverfahren läuft; Realisierung abhängig von künftigem Planfeststellungsverfahren</td></tr>
+                </table></div>
+                <h4>Fragen für Ihre Abwägung</h4>
+                <p>Der Tunnelpark ist politisch versprochen, aber weder rechtlich gesichert noch finanziert. Der Grünzug bei Plan B ist konzeptionell vorgesehen, aber ebenfalls weder rechtlich gesichert noch planfestgestellt. Welche Grünlösung halten Sie für realistischer umsetzbar – und warum?</p>
+            </div>
+        </details>
+
+        <!-- Abschnitt F -->
+        <details id="section-F">
+            <summary>Abschnitt F: Sie fahren häufig mit dem Rad</summary>
+            <div class="details-content">
+                <h3>Fakten</h3>
+                <div class="table-wrapper"><table>
+                    <tr><th>Aspekt</th><th>Tunnel (Nein)</th><th>Plan B (Ja)</th></tr>
+                    <tr><td>Radverkehrs-Infrastruktur</td><td>5 km Rad- und Gehwege auf dem Tunneldeckel (Abschnitt Mitte, geplant). Realisierung abhängig von Umsetzung des Tunneldeckels</td><td>Durchgängige Nord-Süd-Radwege als Konzeptelement; fehlende Verbindung Gostenhof–St. Leonhard würde geschlossen</td></tr>
+                    <tr><td>Priorität der Ausgaben</td><td>Milliarden in Kfz-Infrastruktur; Radverkehr erhält verbesserte Oberfläche erst nach ~2038</td><td>Geringere Gesamtkosten schaffen ggf. mehr Spielraum für Radinfrastruktur in der gesamten Stadt</td></tr>
+                </table></div>
+                <h4>Fragen für Ihre Abwägung</h4>
+                <p>Ist Ihnen eine <strong>frühere und konzeptionell vorgesehene Radinfrastruktur</strong> wichtig – oder akzeptieren Sie, dass die geplanten Radwege beim Tunnel erst nach ~2038 kommen und an die Tunneldeckel-Realisierung geknüpft sind? (Hinweis: Beide Radwegversprechen sind bislang nicht rechtlich gesichert.)</p>
+            </div>
+        </details>
+
+        <!-- Abschnitt G -->
+        <details id="section-G">
+            <summary>Abschnitt G: Steuerzahler &amp; allgemein Interessierte (betrifft alle)</summary>
+            <div class="details-content">
+                <p>Dieser Abschnitt fasst die wichtigsten Argumente beider Seiten zusammen, wie sie von den jeweiligen Lagern vertreten werden.</p>
+                <h4>Wofür die Befürworter des Ausbaus sprechen (Nein):</h4>
+                <p>CSU, SPD und Oberbürgermeister König befürworten den Ausbau. Ihre Hauptargumente:</p>
+                <ul>
+                    <li><strong>Maximaler Lärmschutz</strong> – über 7.500 Anwohner profitieren allein im Abschnitt West von bis zu 8 m hohen Wänden; der Tunnel nimmt den Durchgangsverkehr aus dem Stadtbild</li>
+                    <li><strong>Gesicherte Förderung</strong> – 800 Mio. € von Freistaat Bayern sind an dieses konkrete Projekt gebunden; bei einem Stopp entfällt diese Summe</li>
+                    <li><strong>Rechtssicherheit</strong> – nach 20 Jahren Planung (seit 2006) und zwölf Jahren gerichtlicher Überprüfung liegt endgültiges Baurecht vor (BVerwG 26. März 2025 wies letzte Beschwerde des Bund Naturschutz zurück; alle drei Klageverfahren — VCD, Bund Naturschutz, Privatperson — sind abgeschlossen); neues Verfahren würde viele weitere Jahre kosten. <em>Hinweis: Die Länge der Planungsgeschichte ist ein Argument für Rechtssicherheit und Baubeginnfähigkeit — sie ist aber aus entscheidungstheoretischer Sicht kein eigenständiges Argument für den Weiterbau. Vergangene Planungskosten sind bereits geflossen, unabhängig davon, was heute entschieden wird.</em></li>
+                    <li><strong>Sofortiger Baubeginn</strong> – Abschnitt West (Kosten: ca. 90 Mio. €) kann im Februar 2027 starten; Fertigstellung Anfang bis Mitte 2030</li>
+                    <li><strong>Wirtschaftliche Entlastung</strong> – Handwerk, Logistik und Pendler profitieren von besserer Erreichbarkeit</li>
+                    <li><strong>Sanierungskosten bei Stopp</strong> – auch ohne Ausbau müsste der FSW für ca. 110 Mio. € (davon ca. 55 Mio. € Eigenanteil) saniert werden, mit jahrelangen Baustellen und ohne Qualitätsverbesserung. Dies wäre das Ergebnis, falls nach einem Ja weder Plan B noch ein anderes Alternativkonzept realisiert wird</li>
+                </ul>
+                <h4>Was gegen den Ausbau spricht (Nein):</h4>
+                <ul>
+                    <li><strong>Hoher Eigenanteil bei angespanntem Haushalt</strong> – die Stadt Nürnberg konnte 2026 keine neuen Kreditermächtigungen erhalten (170 Mio. € gestrichen); wie der Eigenanteil von ca. 300–400 Mio. € finanziert werden soll, ist offen</li>
+                    <li><strong>Lange Gesamtbauzeit</strong> – Abschnitt West bis Anfang bis Mitte 2030; Abschnitt Mitte (Tunnel, ~10 Jahre danach) Fertigstellung ca. 2040; das bedeutet phasenweise Baustellen über ca. 13 Jahre</li>
+                    <li><strong>Kreuzungsfreiheit nur für Durchgangsverkehr</strong> – der Tunnel nimmt nur den Durchgangsverkehr auf, der laut Planungsunterlagen etwa 20 % des Gesamtverkehrs ausmacht. Der oberirdische Stadtverkehr (ca. 80 %) passiert weiterhin alle Ampeln. Kritiker fragen, ob rund 75 % der Baukosten für diesen Effekt verhältnismäßig sind. SÖR bestätigt: Ampelzahl bleibt gleich, da Stadtverkehr weiter oberirdisch fährt</li>
+                    <li><strong>Park ohne Rechtsgrundlage</strong> – der versprochene Stadtteilpark auf dem Tunneldeckel ist weder rechtlich bindend noch finanziert; Abschnitt Mitte ist planungsrechtlich nicht vollständig beschlossen</li>
+                    <li><strong>Klimabilanz</strong> – der Betonaufwand für den Tunnel steht im Widerspruch zu Nürnbergs Klimazielen</li>
+                    <li><strong>Rückläufige Verkehrsbelastung</strong> – nach Angaben von Georg Kern (DVWG) liegt die aktuelle Belastung ca. 13 % unter dem Wert vor zehn Jahren; Kritiker fragen, ob ein Milliardentunnel noch verhältnismäßig ist</li>
+                    <li><strong>Risiko von Kostenexplosionen</strong> – bei Tunnelgroßprojekten sind Kostensteigerungen ein belegtes Risiko. Boston Big Dig gilt als Extrembeispiel, ist aber auf Nürnberg nicht direkt übertragbar (andere Größenordnung, andere Planungsstandards)</li>
+                </ul>
+                <h4>Wofür die Befürworter von Plan B sprechen (Ja):</h4>
+                <p>Grüne, Linke, ÖDP und weitere Oppositionsgruppen sowie die Initiative „Lieber zurück auf Los" befürworten den Stopp. Ihre Hauptargumente:</p>
+                <ul>
+                    <li><strong>Deutlich günstigere Gesamtlösung</strong> – ca. 300 Mio. € (Schätzung); geringerer Eigenanteil, kein Tunnel, keine laufenden Tunnelbetriebskosten</li>
+                    <li><strong>Kürzere Bauzeit (Bau allein)</strong> – 5–7 Jahre (geschätzt); allerdings zuzüglich neuem Planfeststellungsverfahren (Erfahrungswert Bayern: 5–10 Jahre). Die Gesamtdauer bis zur Fertigstellung könnte damit in der Größenordnung des Tunnelprojekts liegen</li>
+                    <li><strong>Grünzug als Konzeptbestandteil</strong> – Park und Radwege sind strukturell in Plan B verankert, nicht als nachgelagertes Versprechen. Allerdings: auch der Grünzug ist nicht rechtlich gesichert, da kein Planfeststellungsverfahren läuft</li>
+                    <li><strong>Städtische Verwaltung hat Plan B selbst geprüft</strong> – im Verkehrsausschuss am 26.6.2025 präsentierte die Verwaltung Plan B als technisch und finanziell einfachere Alternative angesichts gesunkener Verkehrsbelastungen</li>
+                    <li><strong>Bessere Klimabilanz</strong> – weniger Flächenversiegelung, mehr Entsiegelung, Schwammstadt-Prinzip</li>
+                    <li><strong>Tempo 50 als Sofortmaßnahme</strong> – unabhängig vom Bürgerentscheid fordern die Grünen ein Tempolimit als kurzfristige Lärmschutzmaßnahme</li>
+                </ul>
+                <h4>Was gegen Plan B (Ja) spricht:</h4>
+                <ul>
+                    <li><strong>Kein geprüfter Kostenrahmen</strong> – 300 Mio. € sind eine politische Schätzung, keine geprüfte Kalkulation</li>
+                    <li><strong>Keine gesicherte Förderung</strong> – die 800 Mio. € entfallen; welche Fördermittel alternativ in Frage kämen und zu welchen Bedingungen, ist nicht geklärt</li>
+                    <li><strong>Kein Baurecht</strong> – ein neues Planfeststellungsverfahren dauert in Bayern erfahrungsgemäß 5–10 Jahre; nach Einrechnung dieses Vorlaufs ist der behauptete Zeitvorteil gegenüber dem Tunnel rechnerisch gering bis nicht vorhanden</li>
+                    <li><strong>Geringerer Lärmschutz</strong> – Plan B sieht Tempo 50 und Wände vor; ein direkter Vergleich mit den im Planfeststellungsverfahren berechneten Tunnelwerten ist mangels gleichwertiger Messwerte nicht möglich</li>
+                    <li><strong>Verkehrsverteilung</strong> – die vollständige Verkehrsentflechtung (Durchgangsverkehr unter die Erde) ist nicht Teil des Plans; Kritiker befürchten dauerhaft mehr Ausweichverkehr</li>
+                </ul>
+            </div>
+        </details>
+
+        <!-- Weitere Abschnitte: Internationale Beispiele, Aktuelles, Abstimmung, Quellen -->
+        <details id="international">
+            <summary>Was internationale Beispiele zeigen (und was sie nicht zeigen)</summary>
+            <div class="details-content">
+                <p>Die folgenden Beispiele werden im Nürnberger Diskurs häufig genannt. Sie sind nicht direkt übertragbar, können aber Muster zeigen.</p>
+                <ul>
+                    <li><strong>Seoul (Cheonggyecheon):</strong> Eine mehrspurige Hochstraße wurde zu einem Stadtbach mit Parks umgebaut; Verkehr sank, Stadtklima verbesserte sich. Seoul ist jedoch eine 10-Millionen-Metropole mit einem sehr dichten ÖPNV-Netz – die Übertragbarkeit auf Nürnberg ist begrenzt.</li>
+                    <li><strong>Utrecht:</strong> Ein zugebauter Stadtgraben wurde renaturiert; der zuvor darüber geführte Verkehr wurde umgeleitet. Auch hier gilt: deutlich größeres ÖPNV-Angebot als in Nürnberg.</li>
+                    <li><strong>San Francisco (Embarcadero Freeway):</strong> Nach einem Erdbeben wurde die Hochstraße durch einen Boulevard ersetzt – kein Verkehrskollaps, Aufwertung der Uferzone.</li>
+                    <li><strong>Boston (Big Dig):</strong> Warnendes Beispiel: Der teuerste Stadtautobahntunnel der USA kostete am Ende das Dreifache des ursprünglichen Budgets, war jahrelang von Leckagen und Sicherheitsproblemen betroffen. Der oberirdische Park (Rose Kennedy Greenway) gilt als Gewinn – zu extrem hohem Preis. <em>Einschränkung: Boston ist kein Vergleichsfall für Nürnberg — Größenordnung, Planungskultur, Prüfverfahren und technischer Standard unterscheiden sich erheblich. Kostenexplosionen bei Tunnelgroßprojekten sind ein reales Risiko, aber kein Automatismus. Der Nürnberger FSW-Tunnel arbeitet mit BIM-gestützter Planung und modernen Ausschreibungsstandards.</em></li>
+                </ul>
+                <p><strong>Einordnung:</strong> Verkehrsrückbau führt in der Fachliteratur häufig zur sogenannten „Verkehrsverdunstung" – ein Teil des Kfz-Verkehrs entfällt, weil Fahrten verlagert oder vermieden werden. Dieser Effekt ist real, aber nicht garantiert und hängt stark vom ÖPNV-Angebot und der Stadtstruktur ab. Er ist kein Freifahrtschein für jeden Rückbau in jeder Stadt.</p>
+            </div>
+        </details>
+
+        <details id="aktuelle-entwicklungen">
+            <summary>Was Sie noch wissen sollten: Aktuelle Entwicklungen (Stand Mai/Juni 2026)</summary>
+            <div class="details-content">
+                <ul>
+                    <li><strong>Brücke über den Main-Donau-Kanal gesperrt:</strong> Im März 2026 musste die Frankenschnellwegbrücke über den Main-Donau-Kanal wegen struktureller Schäden vollständig gesperrt werden; Abriss und Neubau sind bis voraussichtlich 2030 geplant. Das betrifft die Verkehrsführung und die Bauplanung für Abschnitt West.</li>
+                    <li><strong>Kreditsperre:</strong> Die Bezirksregierung Mittelfranken hat bei der Haushaltsgenehmigung 2026 neue Kreditermächtigungen von 170 Mio. € gestrichen. Die Grünen sehen darin ein ernsthaftes Finanzierungsproblem für den Ausbau; die Stadt erklärt, die Finanzierung grundsätzlich für gesichert zu halten.</li>
+                    <li><strong>Infokampagne der Stadt:</strong> CSU und SPD haben beantragt, dass die Stadtverwaltung vor dem Bürgerentscheid nochmals gezielt über die Vorteile des Ausbaus informiert. Oppositionsfraktionen kritisieren dies als einseitige Einflussnahme.</li>
+                </ul>
+            </div>
+        </details>
+
+        <details id="abstimmung">
+            <summary>So stimmen Sie ab (unabhängig von Ihrer Entscheidung)</summary>
+            <div class="details-content">
+                <ul>
+                    <li><strong>Wahltag:</strong> Sonntag, 28. Juni 2026, Ergebnisbekanntgabe ab 17:30 Uhr</li>
+                    <li><strong>Wo:</strong> In Ihrem Wahllokal (52 Urnenwahlbezirke) oder per Briefwahl (Unterlagen wurden automatisch mit der Abstimmungsbenachrichtigung versandt)</li>
+                    <li><strong>Was Sie brauchen:</strong> Personalausweis und ggf. Wahlschein</li>
+                    <li><strong>Auf dem Stimmzettel:</strong> Kreuzen Sie <strong>Ja</strong> (für Stopp) oder <strong>Nein</strong> (für Weiterbau) an</li>
+                    <li><strong>Wer darf abstimmen:</strong> Deutsche und EU-Bürger, mindestens 18 Jahre alt am 28. Juni 2026, seit mindestens zwei Monaten mit Wohnsitz in Nürnberg</li>
+                </ul>
+            </div>
+        </details>
+
+        <details id="quellen">
+            <summary>Quellen</summary>
+            <div class="details-content">
+                <p>Dieser Leitfaden basiert auf folgenden öffentlich zugänglichen Quellen:</p>
+                <ul>
+                    <li>Stadt Nürnberg / SÖR: Fragen und Antworten zum Bürgerentscheid</li>
+                    <li>Stadt Nürnberg / SÖR: Kosten des Projekts</li>
+                    <li>Stadt Nürnberg / SÖR: Was wäre ohne Ausbau?</li>
+                    <li>Stadt Nürnberg: Projektübersicht Frankenschnellweg</li>
+                    <li>Stadt Nürnberg / SÖR: Lärmschutz</li>
+                    <li>Stadt Nürnberg / SÖR: Erwiderung auf BauLust-Flugblatt, September 2024</li>
+                    <li>Stadt Nürnberg: Pressemitteilung BVerwG-Urteil, 26. März 2025</li>
+                    <li>Stadt Nürnberg: Ratsinformationssystem, Stadtratsbericht SÖR 22.01.2025</li>
+                    <li>CSU-Stadtratsfraktion Nürnberg: Positionierung</li>
+                    <li>SPD-Stadtratsfraktion Nürnberg: Gemeinsames Statement mit CSU</li>
+                    <li>Grüne Stadtratsfraktion Nürnberg: Alternativkonzept Plan B und Lärmschutzantrag</li>
+                    <li>Initiative „Lieber zurück auf Los": Faktenseite</li>
+                    <li>BauLust e.V.: Visualisierungen und Faktencheck</li>
+                    <li>Bund Naturschutz: Argumente gegen den Ausbau</li>
+                    <li>Nordbayern.de: Verkehrsgutachten 2019, Infokampagne, Expertenstimmen (2019–2026)</li>
+                    <li>t-online Nürnberg: Streit verschärft sich / Grüne warnen vor Milliardenloch</li>
+                    <li>Marktspiegel Nürnberg: Beschluss Bauabschnitt West 90 Mio. € (Dezember 2025)</li>
+                    <li>Nordbayern.de / NN.de: Verkehrszählung 2024/2025 (Januar 2026)</li>
+                    <li>Georg Kern (DVWG): Aussagen zur Verkehrsbelastung</li>
+                    <li>Internationale Fallbeispiele: Seoul, Utrecht, San Francisco, Boston</li>
+                </ul>
+            </div>
+        </details>
+
+        <!-- Disclaimer im Footer bereits vorhanden, aber auch hier prominent -->
+    </main>
+
+    <footer>
+        <p class="cookie-banner">
+            <strong>Cookie-Hinweis:</strong> Diese Website verwendet keine Analyse-Cookies. Technisch notwendige Cookies werden gesetzt (z.B. für die Chat-Funktion). Durch die Nutzung stimmen Sie zu.
+        </p>
+        <p><strong>Dieser Leitfaden gibt keine Abstimmungsempfehlung.</strong> Er soll Ihnen helfen, eine informierte Entscheidung nach Ihren eigenen Prioritäten zu treffen – auf Basis der Fakten, die für Ihre persönliche Situation relevant sind. Wo Zahlen umstritten oder nicht vergleichbar sind, ist das im Text kenntlich gemacht. Wo Argumente bekannte logische Fehler enthalten (z. B. Sunk-Cost-Überlegungen oder unzulässige Analogieschlüsse), ist darauf hingewiesen.</p>
+        <div class="imprint-datenschutz">
+            <details>
+                <summary>Impressum</summary>
+                <div class="details-content">
+                    <p>[Platzhalter: Name, Adresse, Kontakt – bitte vor Veröffentlichung ausfüllen]</p>
+                </div>
+            </details>
+            <details>
+                <summary>Datenschutzerklärung</summary>
+                <div class="details-content">
+                    <p>Verantwortlich: [Name und Kontaktdaten]<br>
+                    Diese Website erhebt keine personenbezogenen Daten. Es werden keine Analyse- oder Tracking-Tools verwendet. Der optionale Chat-Assistent verarbeitet Ihre Eingaben lokal im Browser; es werden keine Daten an externe Server gesendet, solange kein DeepSeek-API-Key hinterlegt wird. Bei Aktivierung eines API-Keys gilt die Datenschutzerklärung des Anbieters. Es werden nur technisch notwendige Session-Storage-Daten für die Suchfunktion und den Chatverlauf genutzt, die nach Schließen des Browsers gelöscht werden.</p>
+                </div>
+            </details>
+        </div>
+    </footer>
+
+    <!-- Chat-Assistent (optional, basiert auf lokalen FAQs) -->
+    <div class="chat-toggle" id="chat-toggle" aria-label="Chat-Assistent öffnen" title="Hilfe per Chat">💬</div>
+    <div class="chat-panel" id="chat-panel">
+        <div class="chat-header">
+            <span>Bürgerleitfaden-Assistent</span>
+            <button class="close-chat" id="close-chat" aria-label="Chat schließen">✕</button>
+        </div>
+        <div class="chat-messages" id="chat-messages" aria-live="polite">
+            <div class="chat-message bot">Hallo! Ich kann einige häufige Fragen zum Bürgerentscheid beantworten. Geben Sie einfach einen Begriff oder eine Frage ein.</div>
+        </div>
+        <div class="chat-input-area">
+            <input type="text" id="chat-input" placeholder="Frage eingeben…" aria-label="Chat-Nachricht">
+            <button id="chat-send">Senden</button>
+        </div>
+    </div>
+
+    <script>
+        // Accordion opener for finder buttons
+        document.querySelectorAll('.finder-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const targetId = btn.getAttribute('data-target');
+                const details = document.getElementById(targetId);
+                if (details) {
+                    details.open = true;
+                    details.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    // Focus for accessibility
+                    details.focus();
+                }
+            });
+        });
+
+        // Search functionality
+        const searchInput = document.getElementById('search-input');
+        const searchBtn = document.getElementById('search-btn');
+        const searchResults = document.getElementById('search-results');
+
+        function performSearch() {
+            const query = searchInput.value.trim().toLowerCase();
+            searchResults.innerHTML = '';
+            if (query.length < 2) return;
+
+            const allDetails = document.querySelectorAll('details');
+            const results = [];
+            allDetails.forEach(detail => {
+                if (detail.id === 'chat-panel') return; // skip chat
+                const text = detail.textContent.toLowerCase();
+                if (text.includes(query)) {
+                    const summary = detail.querySelector('summary');
+                    const title = summary ? summary.textContent.trim() : detail.id;
+                    results.push({ id: detail.id || '', title, element: detail });
+                }
+            });
+            if (results.length === 0) {
+                searchResults.innerHTML = '<li>Keine Treffer gefunden.</li>';
+                return;
+            }
+            results.forEach(res => {
+                const li = document.createElement('li');
+                const a = document.createElement('a');
+                a.href = '#';
+                a.textContent = res.title;
+                a.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    res.element.open = true;
+                    res.element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    res.element.focus();
+                    // Optionally highlight text, but skipping for simplicity
+                });
+                li.appendChild(a);
+                searchResults.appendChild(li);
+            });
+        }
+
+        searchBtn.addEventListener('click', performSearch);
+        searchInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') performSearch();
+        });
+
+        // Simple FAQ-based chat bot
+        const faqs = [
+            { q: ['kosten', 'teuer', 'milliarde', 'eigenanteil', 'haushalt'], a: 'Die geschätzten Gesamtkosten für den Tunnel betragen ca. 1,1 Mrd. € (geprüft), für Plan B ca. 300 Mio. € (politische Schätzung, nicht geprüft). Der städtische Eigenanteil beim Tunnel liegt bei 300-400 Mio. €.' },
+            { q: ['lärm', 'lärmschutz', 'leise', 'anwohner'], a: 'Beim Tunnel (Nein) erhalten Anwohner im Abschnitt West bis zu 8 m hohe Lärmschutzwände und später den Tunnel. Bei Plan B (Ja) Tempo 50 und Wände – ein direkter Vergleich der Lärmwerte ist nicht möglich.' },
+            { q: ['bauzeit', 'dauer', 'fertig', '2040'], a: 'Tunnel: Abschnitt West fertig Anfang bis Mitte 2030, Gesamtfertigstellung ca. 2040. Plan B: 5–7 Jahre Bau, aber plus 5-10 Jahre Planfeststellung – ebenfalls ca. 2040.' },
+            { q: ['förderung', 'geld', 'freistaat'], a: 'Für den Tunnel stehen 800 Mio. € Förderung bereit, zweckgebunden. Bei einem Stopp entfällt diese Summe; neue Fördermittel müssten beantragt werden.' },
+            { q: ['rad', 'fahrrad', 'radweg'], a: 'Tunnel: 5 km Radweg auf dem Deckel nach ~2038. Plan B: durchgängige Nord-Süd-Radwege als Konzept – beides nicht rechtlich gesichert.' },
+            { q: ['grün', 'park', 'grünzug'], a: 'Der Tunnel verspricht einen Stadtteilpark auf dem Deckel, Plan B einen Grünzug – beide sind derzeit nicht rechtlich gesichert.' },
+            { q: ['abstimmen', 'wahltag', 'briefwahl'], a: 'Wahltag: 28. Juni 2026, Wahllokal oder Briefwahl. Sie brauchen Personalausweis und ggf. Wahlschein. Kreuzen Sie Ja (Stopp) oder Nein (Weiterbau) an.' }
+        ];
+
+        const chatToggle = document.getElementById('chat-toggle');
+        const chatPanel = document.getElementById('chat-panel');
+        const closeChat = document.getElementById('close-chat');
+        const chatMessages = document.getElementById('chat-messages');
+        const chatInput = document.getElementById('chat-input');
+        const chatSend = document.getElementById('chat-send');
+
+        chatToggle.addEventListener('click', () => {
+            chatPanel.classList.toggle('open');
+            if (chatPanel.classList.contains('open')) chatInput.focus();
+        });
+        closeChat.addEventListener('click', () => {
+            chatPanel.classList.remove('open');
+        });
+
+        function addChatMessage(text, sender) {
+            const msgDiv = document.createElement('div');
+            msgDiv.className = 'chat-message ' + sender;
+            msgDiv.textContent = text;
+            chatMessages.appendChild(msgDiv);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        function getBotAnswer(input) {
+            const lower = input.toLowerCase();
+            for (let faq of faqs) {
+                if (faq.q.some(keyword => lower.includes(keyword))) {
+                    return faq.a;
+                }
+            }
+            return 'Diese Frage kann ich leider nicht beantworten. Bitte nutzen Sie die Suchfunktion oder stöbern Sie in den Abschnitten.';
+        }
+
+        chatSend.addEventListener('click', () => {
+            const userMsg = chatInput.value.trim();
+            if (!userMsg) return;
+            addChatMessage(userMsg, 'user');
+            chatInput.value = '';
+            setTimeout(() => {
+                addChatMessage(getBotAnswer(userMsg), 'bot');
+            }, 300);
+        });
+        chatInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') chatSend.click();
+        });
+
+        // Make all details keyboard focusable (they already are by default)
+        // No additional JS needed for accordion behavior; details/summary are natively accessible.
+    </script>
+</body>
+</html>
